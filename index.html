@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Pack | Учебные материалы</title>
+    <!-- Подключаем шрифт -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ОСНОВНЫЕ СТИЛИ - СИНЕ-ГОЛУБАЯ ГАММА */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f0fa 100%);
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ШАПКА САЙТА */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0284c7, #0e7cae);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: #475569;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #b8d8f0;
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* СЕТКА КАРТОЧЕК ТОВАРОВ */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* КАРТОЧКА ТОВАРА */
+        .product-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -8px rgba(2, 132, 199, 0.15);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(148, 197, 255, 0.3);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 40px -10px rgba(2, 132, 199, 0.3);
+            background: white;
+            border-color: #7ab7e0;
+        }
+
+        .card-image {
+            position: relative;
+            background: linear-gradient(145deg, #b8d8f0, #d4e8ff);
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .product-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.8rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #0369a1;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+            border: 1px solid #9ac8ff;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: #334155;
+            margin-bottom: 1.5rem;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            border-top: 1px dashed #b8d8f0;
+            padding-top: 1.2rem;
+        }
+
+        .card-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0284c7;
+        }
+
+        /* КНОПКА ОБЗОР */
+        .review-button {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.8rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+        }
+
+        .review-button i {
+            font-size: 0.9rem;
+        }
+
+        .review-button:hover {
+            background: linear-gradient(135deg, #0369a1, #0284c7);
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4);
+        }
+
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 52, 84, 0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8fcff);
+            border-radius: 2.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2.5rem;
+            box-shadow: 0 30px 60px -15px rgba(2, 132, 199, 0.4);
+            border: 1px solid #b8d8f0;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #e6f0fa;
+            border: none;
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0369a1;
+            transition: all 0.2s;
+            z-index: 10;
+            border: 1px solid #9ac8ff;
+        }
+
+        .close-button:hover {
+            background: #d4e8ff;
+            color: #0c4a6e;
+            transform: rotate(90deg);
+        }
+
+        /* КАРУСЕЛЬ */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            border-radius: 2rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: #d4e8ff;
+            box-shadow: inset 0 2px 10px rgba(2, 132, 199, 0.1);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(145deg, #e6f0fa, #d4e8ff);
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: none;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0284c7;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2);
+            transition: all 0.2s;
+            border: 1px solid #9ac8ff;
+        }
+
+        .carousel-button:hover {
+            background: #dbeafe;
+            color: #0369a1;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-button.prev {
+            left: 1.2rem;
+        }
+
+        .carousel-button.next {
+            right: 1.2rem;
+        }
+
+        /* ТОЧКИ КАРУСЕЛИ */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            margin: 1.2rem 0 1.5rem;
+        }
+
+        .dot {
+            width: 0.7rem;
+            height: 0.7rem;
+            border-radius: 50%;
+            background: #9ac8ff;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #0284c7;
+            width: 2rem;
+            border-radius: 1rem;
+        }
+
+        /* ДЕТАЛИ ТОВАРА В МОДАЛКЕ */
+        .modal-details {
+            padding: 0 0.5rem;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .modal-description {
+            color: #1e293b;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            background: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid #b8d8f0;
+        }
+
+        /* БЛОК С ПРИМЕРОМ */
+        .example-box {
+            background: linear-gradient(145deg, #f8fcff, #e6f0fa);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px dashed #0284c7;
+        }
+
+        .example-box i {
+            font-size: 3rem;
+            color: #0284c7;
+            margin-bottom: 1rem;
+        }
+
+        .example-box h3 {
+            color: #0c4a6e;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .example-box p {
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+
+        .example-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 3rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+        }
+
+        .example-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4);
+        }
+
+        /* Стиль для неактивной кнопки (когда пример не готов) */
+        .example-button.disabled {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            box-shadow: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .example-button.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .modal-price-wrapper {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-price-label {
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        .modal-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0284c7;
+        }
+
+        /* КНОПКА ПОКУПКИ В МОДАЛКЕ - ВЕДЕТ В ВК */
+        .modal-buy-button {
+            background: linear-gradient(135deg, #0284c7, #0e7cae);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.25);
+        }
+
+        .modal-buy-button i {
+            font-size: 1.1rem;
+        }
+
+        .modal-buy-button:hover {
+            background: linear-gradient(135deg, #0369a1, #0284c7);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(2, 132, 199, 0.35);
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .modal-content {
+                padding: 1.8rem;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .review-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="header">
+            <h1>📚 Exam Pack</h1>
+            <div class="subtitle">Готовые материалы для подготовки в формате онлайн тренажёров</div>
+        </div>
+
+        <!-- СЕТКА ТОВАРОВ -->
+        <div class="products-grid" id="productsGrid">
+            <!-- WORD FORMATION -->
+            <div class="product-card" data-product-id="1">
+                <div class="card-image">
+                    <img src="images/word-formation.jpg" alt="Word Formation обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">📚 Словообразование</span>
+                    <div class="card-title">Exam Pack Word Formation</div>
+                    <div class="card-description">
+                        Полный комплект материалов по словообразованию. Префиксы, суффиксы, сложные слова. 50+ страниц теории и практики.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAMMAR -->
+            <div class="product-card" data-product-id="2">
+                <div class="card-image">
+                    <img src="images/grammar.jpg" alt="Grammar обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">📝 Грамматика</span>
+                    <div class="card-title">Exam Pack Grammar</div>
+                    <div class="card-description">
+                        Комплексный сборник упражнений по всем грамматическим темам. 200+ упражнений с ответами.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MONOLOGUES -->
+            <div class="product-card" data-product-id="3">
+                <div class="card-image">
+                    <img src="images/monologues.jpg" alt="Monologues обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">🎤 Монологи</span>
+                    <div class="card-title">Exam Pack Monologues</div>
+                    <div class="card-description">
+                        50 готовых монологов на все темы. Каждый монолог со скриптами и списком полезной лексики.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ELECTRONIC ASSISTANT -->
+            <div class="product-card" data-product-id="4">
+                <div class="card-image">
+                    <img src="images/electronic-assistant.jpg" alt="Electronic Assistant обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">🤖 Электронный помощник</span>
+                    <div class="card-title">Exam Pack Electronic Assistant</div>
+                    <div class="card-description">
+                        30 диалогов для подготовки к разделу "Электронный помощник" в формате онлайн тренажёра.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MATCH TEXTS -->
+            <div class="product-card" data-product-id="5">
+                <div class="card-image">
+                    <img src="images/match-texts.jpg" alt="Match the Texts обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">📖 Чтение: соответствие</span>
+                    <div class="card-title">Reading Match the Texts</div>
+                    <div class="card-description">
+                        20 тестов на установление соответствия между текстами и заголовками. С ключами и пояснениями.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRUE/FALSE/NOT STATED -->
+            <div class="product-card" data-product-id="6">
+                <div class="card-image">
+                    <img src="images/true-false.jpg" alt="True/False/Not Stated обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">📖 Чтение: верно/неверно</span>
+                    <div class="card-title">Reading True/False/Not Stated</div>
+                    <div class="card-description">
+                        Практикум на основе рассказа "The Open Window". 7 заданий в формате ОГЭ на понимание прочитанного.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAILS EXAM PACK -->
+            <div class="product-card" data-product-id="7">
+                <div class="card-image">
+                    <img src="images/emails.jpg" alt="Emails Exam Pack обложка">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">📧 Электронные письма</span>
+                    <div class="card-title">Emails Exam Pack</div>
+                    <div class="card-description">
+                        Комплект материалов для подготовки к разделу "Электронное письмо". 20 шаблонов, полезные фразы, критерии оценивания и примеры.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">1 000 ₽</div>
+                        <button class="review-button open-modal-btn">
+                            <i class="fas fa-eye"></i> Обзор
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="close-button" id="closeModalBtn"><i class="fas fa-times"></i></button>
+
+            <!-- КАРУСЕЛЬ (обложка) -->
+            <div class="carousel-container" id="modalCarousel">
+                <div class="carousel-track" id="carouselTrack"></div>
+                <button class="carousel-button prev" id="carouselPrev"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-button next" id="carouselNext"><i class="fas-chevron-right"></i></button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+
+            <!-- ДЕТАЛИ ТОВАРА -->
+            <div class="modal-details">
+                <div class="modal-title" id="modalTitle">Название материала</div>
+                <div class="modal-description" id="modalDescription">
+                    Подробное описание материала.
+                </div>
+
+                <!-- БЛОК С ПРИМЕРОМ -->
+                <div class="example-box" id="exampleBox">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>📋 Пример задания</h3>
+                    <p id="exampleMessage">Нажмите на кнопку ниже, чтобы открыть пример задания с GitHub</p>
+                    <a href="#" class="example-button" id="exampleButton" target="_blank">
+                        <i class="fab fa-github"></i> Открыть пример на GitHub
+                    </a>
+                </div>
+
+                <div class="modal-price-wrapper">
+                    <span class="modal-price-label">Цена:</span>
+                    <span class="modal-price" id="modalPrice">1 000 ₽</span>
+                </div>
+
+                <!-- КНОПКА ПОКУПКИ ВЕДЕТ В ВК -->
+                <a href="https://vk.com/id142079105" class="modal-buy-button" id="modalBuyBtn" target="_blank" rel="noopener">
+                    <i class="fab fa-vk"></i> Перейти к покупке (VK)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ДАННЫЕ ТОВАРОВ - только разделы с готовыми ссылками
+        const productsData = {
+            1: { // Word Formation - активная ссылка
+                images: ["images/word-formation.jpg"],
+                name: "Exam Pack Word Formation",
+                fullDescription: "📚 Полный комплект материалов по словообразованию. Включает: префиксы и суффиксы, сложные слова, конверсия, упражнения на отработку, ответы с пояснениями. 50+ страниц теории и практики в формате онлайн тренажёра.",
+                price: "1 000 ₽",
+                exampleLink: "https://yulyaivanova2013.github.io/shopping-wordformation/",
+                isReady: true
+            },
+            2: { // Grammar - активная ссылка
+                images: ["images/grammar.jpg"],
+                name: "Exam Pack Grammar",
+                fullDescription: "📝 Комплексный сборник по грамматике: все времена, пассивный залог, согласование времен, условные предложения, модальные глаголы. 200+ упражнений с ответами в формате онлайн тренажёра.",
+                price: "1 000 ₽",
+                exampleLink: "https://yulyaivanova2013.github.io/-11/",
+                isReady: true
+            },
+            3: { // Monologues - не готов
+                images: ["images/monologues.jpg"],
+                name: "Exam Pack Monologues",
+                fullDescription: "🎤 50 готовых монологов на все темы. Каждый монолог со скриптами и списком полезной лексики в формате онлайн тренажёра.",
+                price: "1 000 ₽",
+                exampleLink: "#",
+                isReady: false
+            },
+            4: { // Electronic Assistant - не готов
+                images: ["images/electronic-assistant.jpg"],
+                name: "Exam Pack Electronic Assistant",
+                fullDescription: "🤖 30 диалогов для подготовки к разделу 'Электронный помощник' в формате онлайн тренажёра.",
+                price: "1 000 ₽",
+                exampleLink: "#",
+                isReady: false
+            },
+            5: { // Match Texts - не готов
+                images: ["images/match-texts.jpg"],
+                name: "Reading Match the Texts",
+                fullDescription: "📖 20 тестов на установление соответствия между текстами и заголовками. Все задания в формате экзамена. Есть ключи и пояснения в формате онлайн тренажёра.",
+                price: "1 000 ₽",
+                exampleLink: "#",
+                isReady: false
+            },
+            6: { // The Open Window - активная ссылка
+                images: ["images/true-false.jpg"],
+                name: "Reading True/False/Not Stated: The Open Window",
+                fullDescription: "📖 Практикум на основе рассказа 'The Open Window' (Саки). 7 заданий в формате ОГЭ на понимание прочитанного. Текст + утверждения 10-16 с автоматической проверкой.",
+                price: "1 000 ₽",
+                exampleLink: "https://yulyaivanova2013.github.io/The-Open-Window/",
+                isReady: true
+            },
+            7: { // Emails - активная ссылка
+                images: ["images/emails.jpg"],
+                name: "Emails Exam Pack",
+                fullDescription: "📧 Комплект материалов для подготовки к разделу 'Электронное письмо'. 20 шаблонов писем на все темы, полезные фразы и клише, критерии оценивания и примеры идеальных писем. Поможет научиться писать письма на высокий балл.",
+                price: "1 000 ₽",
+                exampleLink: "https://yulyaivanova2013.github.io/HEALTHY-LIFESTYLE-emal/",
+                isReady: true
+            }
+        };
+
+        // ЭЛЕМЕНТЫ
+        const modal = document.getElementById('productModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalBuyBtn = document.getElementById('modalBuyBtn');
+        const exampleButton = document.getElementById('exampleButton');
+        const exampleMessage = document.getElementById('exampleMessage');
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselDots = document.getElementById('carouselDots');
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+
+        let currentSlide = 0;
+        let currentImages = [];
+
+        function openModal(productId) {
+            const product = productsData[productId];
+            if (!product) return;
+
+            currentImages = product.images || [];
+            currentSlide = 0;
+
+            modalTitle.textContent = product.name;
+            modalDescription.textContent = product.fullDescription;
+            modalPrice.textContent = product.price;
+            
+            // Настройка кнопки примера в зависимости от готовности
+            if (product.isReady && product.exampleLink && product.exampleLink !== "#") {
+                exampleButton.href = product.exampleLink;
+                exampleButton.classList.remove('disabled');
+                exampleButton.style.pointerEvents = "auto";
+                exampleButton.style.opacity = "1";
+                exampleMessage.textContent = "Нажмите на кнопку ниже, чтобы открыть пример задания с GitHub";
+            } else {
+                exampleButton.href = "#";
+                exampleButton.classList.add('disabled');
+                exampleButton.style.pointerEvents = "none";
+                exampleButton.style.opacity = "0.6";
+                exampleMessage.textContent = "😅 Oops! Not ready yet. Пример появится позже.";
+            }
+
+            // Заполняем карусель
+            carouselTrack.innerHTML = '';
+            carouselDots.innerHTML = '';
+
+            if (currentImages.length > 0) {
+                currentImages.forEach((imgSrc, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = `${product.name} - фото ${index + 1}`;
+                    slide.appendChild(img);
+                    carouselTrack.appendChild(slide);
+                    
+                    const dot = document.createElement('button');
+                    dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => goToSlide(index));
+                    carouselDots.appendChild(dot);
+                });
+            }
+
+            updateCarousel();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function goToSlide(index) {
+            if (currentImages.length === 0) return;
+            
+            if (index < 0) index = 0;
+            if (index >= currentImages.length) index = currentImages.length - 1;
+            currentSlide = index;
+            updateCarousel();
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                if (i === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function updateCarousel() {
+            if (carouselTrack.children.length === 0) return;
+            const slideWidth = carouselTrack.children[0]?.offsetWidth || 0;
+            carouselTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+        }
+
+        // Обработчики для кнопок ОБЗОР
+        document.querySelectorAll('.open-modal-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.product-card');
+                if (!card) return;
+                const productId = card.getAttribute('data-product-id');
+                openModal(productId);
+            });
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentImages.length === 0) return;
+            const newSlide = currentSlide - 1;
+            if (newSlide >= 0) {
+                goToSlide(newSlide);
+            } else {
+                goToSlide(currentImages.length - 1);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentImages.length === 0) return;
+            const newSlide = currentSlide + 1;
+            if (newSlide < currentImages.length) {
+                goToSlide(newSlide);
+            } else {
+                goToSlide(0);
+            }
+        });
+
+        window.addEventListener('resize', updateCarousel);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
